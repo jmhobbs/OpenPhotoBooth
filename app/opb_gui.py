@@ -30,6 +30,8 @@ from multiprocessing import Process
 
 import opb_web
 
+import webbrowser
+
 ############## gtk Stuff ##############
 
 def server_process ():
@@ -42,7 +44,9 @@ class OPB_UI:
 		self.process.start()
 		self.stop_button.set_sensitive( True )
 		self.start_button.set_sensitive( False )
-		self.status_label.set_markup( '<a href="http://localhost:8080/">Open Browser To View</a>' )
+		self.browser_button.set_sensitive( True )
+		# Windows barfs on the <a></a> tag, so no nice browser opening :(
+		self.status_label.set_text( 'Open browser to http://localhost:8080/' )
 
 	def destroy( self, widget, data=None ):
 		self.stop( widget, data )
@@ -52,6 +56,7 @@ class OPB_UI:
 		if None != self.process:
 			self.process.terminate()
 			self.stop_button.set_sensitive( False )
+			self.browser_button.set_sensitive( False )
 			self.start_button.set_sensitive( True )
 			self.status_label.set_text( 'Click "Start" To Run Server' )
 
@@ -95,7 +100,7 @@ class OPB_UI:
 		self.stop_button.set_image( gtk.image_new_from_file( 'icons/media-playback-stop.png' ) )
 		table.attach( self.stop_button, 1, 2, 1, 2 )
 		self.stop_button.show()
-
+		
 		about_button = gtk.Button( "About" )
 		about_button.connect( "clicked", self.about, None )
 		about_button.set_image( gtk.image_new_from_file( 'icons/help-browser.png' ) )
