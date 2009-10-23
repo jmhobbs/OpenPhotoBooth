@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 """
 Copyright (c) 2009 Little Filament
 
@@ -23,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
 
-import web # web.py
-import Image # PIL
+import web
+import Image
 
 web.config.debug = False
 
@@ -44,11 +43,12 @@ class main:
 class save_photo:
 	def POST( self ):
 		""" Save the photo data, thumbnail it and move on. """
+		i = web.input( image=None )
 		#size = 2, 2
 		#im = Image.open( 'icons/camera-photo.png' )
 		#im.thumbnail( size )
 		#im.save( 'camera-photo.jpg', "JPEG" )
-		return '{"saved": true}'
+		return '{"saved": true, "length": %d}' % ( len( i.image ) )
 
-if __name__ == "__main__":
+if __name__ == "__main__" :
 	app.run()
