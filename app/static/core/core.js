@@ -1,9 +1,9 @@
-$(document).ready(function () {
+/*$(document).ready(function () {
 	$(document).keypress(function(e) { OPBConfig.onKeyPress(e); });
 	OPBConfig.onLoad();
-});
+});*/
 
-$(window).unload(function () { OPBConfig.onUnLoad() });
+$(window).unload(function () { /*OPBConfig.onUnLoad()*/ });
 
 OpenPhotoBooth = {
 	// Flag to see if we are currently asking the SWF for an image
@@ -20,7 +20,7 @@ OpenPhotoBooth = {
 			 async: false,
 			 type: "POST",
 			 data: {image: imageData},
-			 success: function (data) { OPBConfig.postCapture(data); }
+			 success: function (data) { /*OPBConfig.postCapture(data);*/ }
 		  }
     );
 
@@ -31,7 +31,7 @@ OpenPhotoBooth = {
 		if(OpenPhotoBooth.capturePending)
 			return false;
 
-		OPBConfig.preCapture();
+		/*OPBConfig.preCapture();*/
 
 		OpenPhotoBooth.capturePending = true;
 
