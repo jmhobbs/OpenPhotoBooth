@@ -35,18 +35,35 @@ urls = (
   '/favicon.ico', 'favicon_serve'
 )
 
-render = web.template.render( 'static/themes/default/' )
-theme = { 'path': '/static/themes/default/', 'save_path': '/photo' }
+# Need a render engine for the core template files
+core_render = web.template.render( 'static/core/' )
+# Now make that available to the template engine as a global
+web.template.Template.globals['core'] = core_render
 
+# A configuration object to pass information to themes
+opb = {
+	'core_path': '/static/core/',
+	'vendor_path': '/static/vendor/',
+	'theme_path': '/static/themes/default/'
+}
+
+# Nasty hack, I can't get this right :-(
+# SA: main.GET
+theme_render_path = 'static/themes/default/'
+
+# Sets everything required for properly rendering a theme
 def SetTheme ( theme_name ):
-	render = web.template.render( 'static/themes/%s/' % ( theme_name ) )
-	theme['path'] = ( '/static/themes/%s/' % ( theme_name ) )
+	opb['theme_path'] = '/static/themes/%s/' % ( theme_name )
+	theme_render_path = 'static/themes/%s/' % ( theme_name )
 
+# Create the application
 app = web.application( urls, globals() )
 
 class main:
 	def GET( self ):
-		return render.index( theme )
+		# Yuck!
+		theme_render = web.template.render( theme_render_path )
+		return theme_render.index( opb )
 
 class save_photo:
 	def POST( self ):

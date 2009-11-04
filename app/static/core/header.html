@@ -1,0 +1,11 @@
+$def with ( opb )
+<script type="text/javascript" src="$(opb['vendor_path'])jquery-1.3.2.min.js"></script>
+	<script type="text/javascript" src="$(opb['core_path'])errors.js"></script>
+	<script type="text/javascript" src="$(opb['core_path'])core.js"></script>
+	<script type="text/javascript" src="$(opb['vendor_path'])sm2/script/soundmanager2-nodebug-jsmin.js"></script>
+	<script type="text/javascript">
+		soundManager.url = "$(opb['vendor_path'])sm2/swf/";
+		soundManager.debugMode = false;
+		soundManager.onload = function() { OPBConfig.onSoundLoad(); }
+	</script>
+<script type="text/javascript" src="$(opb['theme_path'])config.js"></script>

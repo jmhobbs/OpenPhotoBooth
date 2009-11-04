@@ -32,13 +32,14 @@ import opb_web
 
 ############## gtk Stuff ##############
 
-def server_process ():
+def server_process ( theme_name ):
+	opb_web.SetTheme( theme_name )
 	opb_web.app.run()
 
 class OPB_UI:
 
 	def start( self, widget, data=None ):
-		self.process = Process( target=server_process, args=() )
+		self.process = Process( target=server_process, args=( "new", ) )
 		self.process.start()
 		self.stop_button.set_sensitive( True )
 		self.start_button.set_sensitive( False )
@@ -96,7 +97,7 @@ class OPB_UI:
 		self.stop_button.set_image( gtk.image_new_from_file( 'icons/media-playback-stop.png' ) )
 		table.attach( self.stop_button, 1, 2, 1, 2 )
 		self.stop_button.show()
-		
+
 		about_button = gtk.Button( "About" )
 		about_button.connect( "clicked", self.about, None )
 		about_button.set_image( gtk.image_new_from_file( 'icons/help-browser.png' ) )
