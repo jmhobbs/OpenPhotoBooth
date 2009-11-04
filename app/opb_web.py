@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2009 Little Filament
+Copyright (c) 2009 John Hobbs, Little Filament
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -35,27 +35,32 @@ urls = (
   '/favicon.ico', 'favicon_serve'
 )
 
-#render = web.template.render( 'template/' )
+render = web.template.render( 'static/themes/default/' )
+theme = { 'path': '/static/themes/default/', 'save_path': '/photo' }
+
+def SetTheme ( theme_name ):
+	render = web.template.render( 'static/themes/%s/' % ( theme_name ) )
+	theme['path'] = ( '/static/themes/%s/' % ( theme_name ) )
+
 app = web.application( urls, globals() )
 
 class main:
 	def GET( self ):
-		""" Bounce them to the static template index.html """
-		raise web.redirect( '/static/index.html' )
+		return render.index( theme )
 
 class save_photo:
 	def POST( self ):
-                web.header( 'Content-type', 'application/json; charset=utf-8' )
-                
-                """ Save the photo data, thumbnail it and move on. """
+		web.header( 'Content-type', 'application/json; charset=utf-8' )
+
+		""" Save the photo data, thumbnail it and move on. """
 		i = web.input( image=None )
-		
+
 		filename = "%s.jpg" % ( time.time() )
-		
+
 		fullsize = open( './photos/' + filename, 'wb' )
 		fullsize.write( base64.standard_b64decode( i.image ) )
 		fullsize.close()
-		
+
 		size = 160, 120
 		im = Image.open( './photos/' + filename )
 		im.thumbnail( size )
@@ -63,8 +68,9 @@ class save_photo:
 		return '{ "saved": true, "thumbnail": "%s" }' % ( filename )
 
 class favicon_serve:
-  def GET ( self ):
-    raise web.redirect( '/static/favicon.ico' )
+	def GET ( self ):
+		raise web.redirect( '/static/favicon.ico' )
 
 if __name__ == "__main__" :
+	SetTheme( 'default' )
 	app.run()
