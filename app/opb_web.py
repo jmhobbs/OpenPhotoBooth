@@ -47,22 +47,21 @@ opb = {
 	'theme_path': '/static/themes/default/'
 }
 
-# Nasty hack, I can't get this right :-(
-# SA: main.GET
-theme_render_path = 'static/themes/default/'
+global theme_render
+theme_render = None
 
 # Sets everything required for properly rendering a theme
 def SetTheme ( theme_name ):
+	global theme_render
+	global opb
 	opb['theme_path'] = '/static/themes/%s/' % ( theme_name )
-	theme_render_path = 'static/themes/%s/' % ( theme_name )
+	theme_render = web.template.render( 'static/themes/%s/' % ( theme_name ) )
 
 # Create the application
 app = web.application( urls, globals() )
 
 class main:
 	def GET( self ):
-		# Yuck!
-		theme_render = web.template.render( theme_render_path )
 		return theme_render.index( opb )
 
 class save_photo:

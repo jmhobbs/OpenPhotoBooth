@@ -39,7 +39,7 @@ def server_process ( theme_name ):
 class OPB_UI:
 
 	def start( self, widget, data=None ):
-		self.process = Process( target=server_process, args=( "new", ) )
+		self.process = Process( target=server_process, args=( "default", ) )
 		self.process.start()
 		self.stop_button.set_sensitive( True )
 		self.start_button.set_sensitive( False )
