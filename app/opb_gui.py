@@ -87,7 +87,7 @@ class OPB_UI:
 
 		self.theme_combo = gtk.combo_box_new_text()
 		for theme in os.listdir( 'static/themes/' ):
-			if theme != 'template':
+			if theme != 'template' and os.path.isdir( 'static/themes/' + theme ):
 				self.theme_combo.append_text( theme )
 		self.theme_combo.set_active( 0 )
 		table.attach( self.theme_combo, 0, 2, 1, 2 )

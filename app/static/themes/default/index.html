@@ -1,19 +1,19 @@
 $def with ( opb )
 <html>
   <head>
-    <title>OpenPhotoBooth</title>
+    <title>OpenPhotoBooth - Default Theme</title>
 		$:core.header( opb )
   </head>
-	<body style="background: #33A1C9;">
+	<body>
 	 <div style="width: 700px; margin: 30px auto 0;">
       <img id="photo1" src="$(opb['theme_path'])set1.jpg" alt="" width="160" height="120" style="margin: 0 5px;"/>
     	<img id="photo2" src="$(opb['theme_path'])set2.jpg" alt="" width="160" height="120" style="margin: 0 5px;"/>
     	<img id="photo3" src="$(opb['theme_path'])set3.jpg" alt="" width="160" height="120" style="margin: 0 5px;"/>
     	<img id="photo4" src="$(opb['theme_path'])set4.jpg" alt="" width="160" height="120" style="margin: 0 5px;"/>
 	  </div>
-		<div style="width: 660px; padding: 10px 0; margin: 30px auto 20px auto; text-align: center; background: #32CD32;">
+		<div style="width: 660px; padding: 10px 0; margin: 30px auto 20px auto; text-align: center; background: #000;">
 			$:core.camera_640x480( opb )
 		</div>
-		<div style="width: 640px; margin: 0 auto; text-align: center; font-size: 40px; font-family: Tahoma, Arial, sans-serif;" id="countdown"></div>
+		<div style="width: 640px; margin: 0 auto; text-align: center; font-size: 40px; font-family: Tahoma, Arial, sans-serif;" id="countdown">Welcome To OpenPhotoBooth!</div>
   </body>
 </html>

@@ -10,7 +10,7 @@ OpenPhotoBooth = {
 
 	capturePending: false,
 
-	captureCallback: function (imageData) {
+	captureCallback: function ( imageData ) {
 		OpenPhotoBooth.capturePending = false;
 
 		jQuery.ajax(
