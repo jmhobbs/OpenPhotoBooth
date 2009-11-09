@@ -28,6 +28,8 @@ import gtk
 
 from multiprocessing import Process
 
+import os
+
 import opb_web
 
 ############## gtk Stuff ##############
@@ -39,10 +41,11 @@ def server_process ( theme_name ):
 class OPB_UI:
 
 	def start( self, widget, data=None ):
-		self.process = Process( target=server_process, args=( "default", ) )
+		self.process = Process( target=server_process, args=( self.theme_combo.get_active_text(), ) )
 		self.process.start()
 		self.stop_button.set_sensitive( True )
 		self.start_button.set_sensitive( False )
+		self.theme_combo.set_sensitive( False )
 		# Windows barfs on the <a></a> tag, so no nice browser opening :(
 		self.status_label.set_text( 'Open browser to http://localhost:8080/' )
 
@@ -55,16 +58,17 @@ class OPB_UI:
 			self.process.terminate()
 			self.stop_button.set_sensitive( False )
 			self.start_button.set_sensitive( True )
+			self.theme_combo.set_sensitive( True )
 			self.status_label.set_text( 'Click "Start" To Run Server' )
 
 	def about ( self, widget, data=None ):
 		dialog = gtk.AboutDialog()
 
 		dialog.set_program_name( 'OpenPhotoBooth' )
-		dialog.set_version( '0.1' )
+		dialog.set_version( '0.2' )
 		dialog.set_website( 'http://www.openphotobooth.com/' )
 		dialog.set_copyright( '(c) 2009 Little Filament' )
-		dialog.set_authors( [ 'John Hobbs - admin@littlefilament.com', '', 'Server by web.py', 'GUI by pygtk', 'jQuery' ] )
+		dialog.set_authors( [ 'John Hobbs - admin@littlefilament.com', '', 'Server by web.py', 'GUI by pygtk', 'Web JS by jQuery' ] )
 		dialog.set_comments( 'Free Photo Fun' )
 
 		dialog.run()
@@ -79,7 +83,15 @@ class OPB_UI:
 		self.window.set_title( 'OpenPhotoBooth Control' )
 		self.window.resize( 300, 1 )
 
-		table = gtk.Table( 3, 2, True )
+		table = gtk.Table( 4, 2, True )
+
+		self.theme_combo = gtk.combo_box_new_text()
+		for theme in os.listdir( 'static/themes/' ):
+			if theme != 'template':
+				self.theme_combo.append_text( theme )
+		self.theme_combo.set_active( 0 )
+		table.attach( self.theme_combo, 0, 2, 1, 2 )
+		self.theme_combo.show()
 
 		self.status_label = gtk.Label( 'Click "Start" To Run Server' )
 		table.attach( self.status_label, 0, 2, 0, 1 )
@@ -88,26 +100,26 @@ class OPB_UI:
 		self.start_button = gtk.Button( "Start" )
 		self.start_button.connect( "clicked", self.start, None )
 		self.start_button.set_image( gtk.image_new_from_file( 'icons/media-playback-start.png' ) )
-		table.attach( self.start_button, 0, 1, 1, 2 )
+		table.attach( self.start_button, 0, 1, 2, 3 )
 		self.start_button.show()
 
 		self.stop_button = gtk.Button( "Stop" )
 		self.stop_button.connect( "clicked", self.stop, None )
 		self.stop_button.set_sensitive( False )
 		self.stop_button.set_image( gtk.image_new_from_file( 'icons/media-playback-stop.png' ) )
-		table.attach( self.stop_button, 1, 2, 1, 2 )
+		table.attach( self.stop_button, 1, 2, 2, 3 )
 		self.stop_button.show()
 
 		about_button = gtk.Button( "About" )
 		about_button.connect( "clicked", self.about, None )
 		about_button.set_image( gtk.image_new_from_file( 'icons/help-browser.png' ) )
-		table.attach( about_button, 0, 1, 2, 3 )
+		table.attach( about_button, 0, 1, 3, 4 )
 		about_button.show()
 
 		quit_button = gtk.Button( "Quit" )
 		quit_button.connect( "clicked", self.destroy, None )
 		quit_button.set_image( gtk.image_new_from_file( 'icons/process-stop.png' ) )
-		table.attach( quit_button, 1, 2, 2, 3 )
+		table.attach( quit_button, 1, 2, 3, 4 )
 		quit_button.show()
 
 		self.window.add( table )
