@@ -26,7 +26,7 @@ OPBConfig = {
 	postCapture : function ( json ) {
 		$( "#countdown" ).text( "" );
 		++OPBSkin.captured;
-		$( '#photo' + OPBSkin.captured ).attr( 'src', json.thumbpath );
+		$( '#photo' + OPBSkin.captured ).attr( 'src', OPBThumbPath + json.thumbnail );
 		if( OPBSkin.captured >= 4 ) {
 			$( "#countdown" ).html( "All Done! Thanks!" );
 			setTimeout( "OPBSkin.reset();", 5000 );

@@ -44,7 +44,8 @@ web.template.Template.globals['core'] = core_render
 opb = {
 	'core_path': '/static/core/',
 	'vendor_path': '/static/vendor/',
-	'theme_path': '/static/themes/default/'
+	'theme_path': '/static/themes/default/',
+  'thumb_path': '/static/thumbs/'
 }
 
 global theme_render
@@ -73,14 +74,14 @@ class save_photo:
 
 		filename = "%s.jpg" % ( time.time() )
 
-		fullsize = open( './photos/' + filename, 'wb' )
+		fullsize = open( './static/photos/' + filename, 'wb' )
 		fullsize.write( base64.standard_b64decode( i.image ) )
 		fullsize.close()
 
 		size = 160, 120
-		im = Image.open( './photos/' + filename )
+		im = Image.open( './static/photos/' + filename )
 		im.thumbnail( size )
-		im.save( './thumbs/' + filename, "JPEG" )
+		im.save( './static/thumbs/' + filename, "JPEG" )
 		return '{ "saved": true, "thumbnail": "%s" }' % ( filename )
 
 class favicon_serve:
