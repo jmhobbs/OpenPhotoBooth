@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2009 Little Filament
+Copyright (c) 2009 John Hobbs, Little Filament
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@ import pygtk
 pygtk.require( '2.0' )
 import gtk
 
-from multiprocessing import Process
+from multiprocessing import Process, freeze_support
 
 import os
 
@@ -131,6 +131,8 @@ class OPB_UI:
 		gtk.main()
 
 if __name__ == "__main__":
+
+	freeze_support() # Required for multiprocess on win32 with py2exe
 
 	gtk.window_set_default_icon_from_file( 'icons/camera-photo.png' )
 

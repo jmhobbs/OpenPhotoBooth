@@ -8,7 +8,7 @@
 
 	; Name of installer and output file name
 	Name "OpenPhotoBooth"
-	OutFile "OpenPhotoBoothInstaller.exe"
+	OutFile "OpenPhotoBooth-Installer.exe"
 
 	; Set the compressor to the LZMA for best packing
 	SetCompressor /FINAL lzma
@@ -73,7 +73,7 @@ Section "Application" SecApp
 	SetOutPath "$INSTDIR"
 
 	; Load everything as is in the build folder
-	File /r "build\*"
+	File /r "dist\*"
 
 	; Store installation folder
 	WriteRegStr HKCU "Software\OpenPhotoBooth" "" $INSTDIR
@@ -96,7 +96,7 @@ Section "Start Menu Shortcuts" SecSM
 
 	CreateDirectory "$SMPROGRAMS\OpenPhotoBooth"
 	CreateShortCut "$SMPROGRAMS\OpenPhotoBooth\uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-	CreateShortCut "$SMPROGRAMS\OpenPhotoBooth\OpenPhotoBooth.lnk" "$INSTDIR\bin\OpenPhotoBooth.exe" "" "$INSTDIR\bin\OpenPhotoBooth.exe" 0
+	CreateShortCut "$SMPROGRAMS\OpenPhotoBooth\OpenPhotoBooth.lnk" "$INSTDIR\opb_gui.exe" "" "$INSTDIR\opb_gui.exe" 0
 
 SectionEnd
 
