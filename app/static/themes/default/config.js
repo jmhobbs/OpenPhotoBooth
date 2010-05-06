@@ -70,6 +70,7 @@ OPBSkin = {
 	},
 
 	reset: function () {
+	 OPBSkin.captured = 0;
 	 $( "#countdown" ).text( "Welcome To OpenPhotoBooth!" );
 	 OPBSkin.inSet = false;
 	 for( i = 1; i <= 4; ++i ) { $( "#photo" + i ).attr( "src", OPBSkinPath + "set" + i + ".jpg"); }
