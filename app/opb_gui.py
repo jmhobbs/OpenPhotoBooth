@@ -65,9 +65,9 @@ class OPB_UI:
 		dialog = gtk.AboutDialog()
 
 		dialog.set_program_name( 'OpenPhotoBooth' )
-		dialog.set_version( '0.2' )
+		dialog.set_version( '0.3' )
 		dialog.set_website( 'http://www.openphotobooth.com/' )
-		dialog.set_copyright( '(c) 2009 Little Filament' )
+		dialog.set_copyright( '(c) 2009-2010 Little Filament' )
 		dialog.set_authors( [ 'John Hobbs - admin@littlefilament.com', '', 'Server by web.py', 'GUI by pygtk', 'Web JS by jQuery' ] )
 		dialog.set_comments( 'Free Photo Fun' )
 

@@ -73,7 +73,7 @@ Section "Application" SecApp
 	SetOutPath "$INSTDIR"
 
 	; Load everything as is in the build folder
-	File /r "dist\*"
+	File /r "..\app\dist\*"
 
 	; Store installation folder
 	WriteRegStr HKCU "Software\OpenPhotoBooth" "" $INSTDIR

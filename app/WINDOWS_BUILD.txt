@@ -1,0 +1,13 @@
+= Windows Build Process =
+
+1. Delete "build" and "dist" if they exists.
+
+2. Python setup.py py2exe
+
+3. Copy "icons", "static", "LICENSE" to "dist"
+
+4. Copy "etc" and "lib" from gtk+ bundle folder to "dist"
+
+5. Run opb_gui.exe and see if it works
+
+6. Compile the nsis script in "windows_installer"
