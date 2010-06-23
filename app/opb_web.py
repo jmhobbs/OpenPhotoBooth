@@ -31,6 +31,8 @@ web.config.debug = False
 
 urls = (
 	'/', 'main',
+	'/set/open', 'open_set',
+	'/set/close', 'close_set',
 	'/photo', 'save_photo',
   '/favicon.ico', 'favicon_serve'
 )
@@ -50,6 +52,9 @@ opb = {
 
 global theme_render
 theme_render = None
+
+global set_id
+set_id = False
 
 # Sets everything required for properly rendering a theme
 def SetTheme ( theme_name ):
@@ -72,7 +77,10 @@ class save_photo:
 		""" Save the photo data, thumbnail it and move on. """
 		i = web.input( image=None )
 
-		filename = "%s.jpg" % ( time.time() )
+		if False != set_id:
+			filename = "%s_%s.jpg" % ( set_id, time.time() )
+		else:
+			filename = "NOSET_%s.jpg" % ( time.time() )
 
 		fullsize = open( './static/photos/' + filename, 'wb' )
 		fullsize.write( base64.standard_b64decode( i.image ) )
@@ -83,6 +91,16 @@ class save_photo:
 		im.thumbnail( size )
 		im.save( './static/thumbs/' + filename, "JPEG" )
 		return '{ "saved": true, "thumbnail": "%s" }' % ( filename )
+
+class open_set:
+	def GET ( self ):
+		set_id = "%s" % time.time()
+		return '{ "set": "%s" }' % set_id
+
+class close_set:
+	def GET ( self ):
+		set_id = False
+		return '{ "set": false }'
 
 class favicon_serve:
 	def GET ( self ):

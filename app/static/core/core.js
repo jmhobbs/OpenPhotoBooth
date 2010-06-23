@@ -41,6 +41,30 @@ OpenPhotoBooth = {
 			document.getElementById("swf-object").capture();
 		else
 			document.getElementById("swf-embed").capture();
+	},
+
+	openSet: function () {
+		jQuery.ajax(
+			{
+				url: "/set/open",
+				dataType: 'json',
+				cache: false,
+				async: false,
+				data: {}
+		  }
+		);
+	},
+
+	closeSet: function () {
+		jQuery.ajax(
+			{
+				url: "/set/close",
+				dataType: 'json',
+				cache: false,
+				async: false,
+				data: {}
+		  }
+		);
 	}
 
 }

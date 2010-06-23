@@ -1,9 +1,13 @@
 /* OPBConfig is for all the hooks that the core.js calls */
 OPBConfig = {
 	// To do on loading (dom complete)
-	onLoad : function () {},
+	onLoad : function () {
+		OpenPhotoBooth.openSet();
+	},
 
-	onUnload: function () {},
+	onUnload: function () {
+		OpenPhotoBooth.closeSet();
+	},
 
 	// Fired when Sound Manager 2 is loaded & ready
 	onSoundLoad: function () {
@@ -28,6 +32,8 @@ OPBConfig = {
 		++OPBSkin.captured;
 		$( '#photo' + OPBSkin.captured ).attr( 'src', OPBThumbPath + json.thumbnail );
 		if( OPBSkin.captured >= 4 ) {
+			OpenPhotoBooth.closeSet();
+			OpenPhotoBooth.openSet();
 			$( "#countdown" ).html( "All Done! Thanks!" );
 			setTimeout( "OPBSkin.reset();", 5000 );
 		}
