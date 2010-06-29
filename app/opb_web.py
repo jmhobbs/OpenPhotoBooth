@@ -50,10 +50,7 @@ opb = {
   'thumb_path': '/static/thumbs/'
 }
 
-global theme_render
 theme_render = None
-
-global set_id
 set_id = False
 
 # Sets everything required for properly rendering a theme
@@ -72,15 +69,16 @@ class main:
 
 class save_photo:
 	def POST( self ):
+		global set_id
 		web.header( 'Content-type', 'application/json; charset=utf-8' )
 
 		""" Save the photo data, thumbnail it and move on. """
 		i = web.input( image=None )
 
 		if False != set_id:
-			filename = "%s_%s.jpg" % ( set_id, time.time() )
+			filename = "%s_%s.jpg" % ( set_id, int( time.time() ) )
 		else:
-			filename = "NOSET_%s.jpg" % ( time.time() )
+			filename = "NOSET_%s.jpg" % ( int( time.time() ) )
 
 		fullsize = open( './static/photos/' + filename, 'wb' )
 		fullsize.write( base64.standard_b64decode( i.image ) )
@@ -94,11 +92,13 @@ class save_photo:
 
 class open_set:
 	def GET ( self ):
-		set_id = "%s" % time.time()
+		global set_id
+		set_id = "%s" % int( time.time() )
 		return '{ "set": "%s" }' % set_id
 
 class close_set:
 	def GET ( self ):
+		global set_id
 		set_id = False
 		return '{ "set": false }'
 
