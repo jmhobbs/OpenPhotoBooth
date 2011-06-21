@@ -26,16 +26,23 @@ import web
 import Image
 import base64
 import time
+import os
+import mimetypes
+
+mimetypes.init()
+
 
 web.config.debug = False
 
-urls = (
+urls = [
 	'/', 'main',
 	'/set/open', 'open_set',
 	'/set/close', 'close_set',
 	'/photo', 'save_photo',
-  '/favicon.ico', 'favicon_serve'
-)
+  '/favicon.ico', 'favicon_serve',
+	'/plugin/(.*)/static/(.*)', 'plugin_static',
+	'/plugin/(.*)/(.*)', 'plugin_serve',
+]
 
 # Need a render engine for the core template files
 core_render = web.template.render( 'static/core/' )
@@ -53,6 +60,15 @@ opb = {
 theme_render = None
 set_id = False
 
+##### Load Plugins
+requested_plugins = [ 'hello_world', ]
+plugins = {}
+
+for name in requested_plugins:
+	m = __import__( '.'.join( ( 'plugins', name ) ), [], [], ['hook'], -1 )
+	plugins[name] = m.hook.Plugin()
+##### End Plugins
+
 # Sets everything required for properly rendering a theme
 def SetTheme ( theme_name ):
 	global theme_render
@@ -61,11 +77,42 @@ def SetTheme ( theme_name ):
 	theme_render = web.template.render( 'static/themes/%s/' % ( theme_name ) )
 
 # Create the application
-app = web.application( urls, globals() )
+app = web.application( tuple( urls ), globals() )
 
 class main:
 	def GET( self ):
 		return theme_render.index( opb )
+
+# Serves static files at /plugin/[plugin name]/[file path]
+class plugin_static:
+	def GET ( self, plugin, path ):
+		filename = os.path.join( 'plugins', plugin, 'static', path ) 
+		if os.path.isfile( filename ):
+			t = mimetypes.guess_type( filename )
+			if t[0]:
+				web.header( 'Content-Type', t[0] )
+				web.header('Transfer-Encoding','chunked') 
+				with open( filename, 'rb' ) as f: 
+					while 1:
+						buf = f.read(1024 * 8) 
+						if not buf: 
+							break 
+						yield buf
+				return
+		
+		app.notfound()
+
+class plugin_serve:
+	def GET ( self, plugin, path ):
+		if plugin in plugins.keys():
+			return plugins[plugin].GET( path, web, app )
+		else:
+			app.notfound()
+	def POST ( self, plugin, path ):
+		if plugin in plugins.keys():
+			return plugins[plugin].POST( path, web, app )
+		else:
+			app.notfound()
 
 class save_photo:
 	def POST( self ):
